@@ -1,0 +1,52 @@
+<%- include ../partials/header.ejs %> 
+<%- include ../partials/main_nav.ejs %> 
+<!-- Main Content -->
+<div class ="container">
+    <div class="row">
+      <div class="col-md-offset-1 col-md-10">
+        <h3>List of Business</h3>
+         
+        <a href="/business/add" class="btn btn-primary" role="button">
+        <i class ="fas fa-plus-circle"></i> Add a business
+     
+        </a>
+        <br>
+  
+        <br/>
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+          <!--HEader row-->
+          <thead>
+          <tr>
+            <th class="text-center">Contact Name</th>
+            <th class="text-center">Contact Number</th>
+            <th class="text-center ">Contact Email</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Templet row-->
+          <% for (let count=0; count<business.length; count++) { %>
+            <tr> 
+              <td class="text-centre "><%=business[count].name %></td>
+              <td class="text-centre "><%=business[count].number %></td>
+              <td class="text-centre "><%=business[count].email %></td>
+              <td class="text-center col-1">
+                <a href="business/edit/<%= business[count]._id %>" class="btn btn-primary btn-sm">
+                <i class="fas fa-pencil-alt"></i> Edit</a>
+            </td>
+            <td class="text-center col-1">
+                <a href="/business/delete/<%= business[count]._id %>" class="btn btn-primary btn-sm">
+                <i class="fas fa-trash-alt"></i> Delete</a>
+            </td>         
+            </tr>
+            <% } %>
+        </tbody>
+        </table>
+      </div>
+    </div>
+</div>    
+
+<%- include ../partials/bottom_nav.ejs %> 
+  
+<%- include ../partials/footer.ejs %> 
