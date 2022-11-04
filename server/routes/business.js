@@ -6,7 +6,7 @@ let passport = require("passport");
 
 // connect to business Model
 
-let business = require("../models/business");
+let business = require("../models/Business");
 
 
 // helper function for guard purposes
@@ -17,16 +17,30 @@ function requireAuth(req, res, next) {
   }
   next();
 }
-
-
-router.get("/", function(req,res,next){
-  business.find((err, business) => {
+router.get("/business", requireAuth, function(req,res,next){
+  business.find((err, Business) => {
     if (err) {
       return console.error(err);
     } else {
       res.render("business/list",{
         title: "Business",
-        business: business,
+        Business: Business,
+        displayName: req.user ? req.user.displayName : "",
+      });
+      
+    }
+  });
+});
+
+router.get("/", function(req,res,next){
+  business.find((err, Business) => {
+    if (err) {
+      return console.error(err);
+    } else {
+      res.render("business/list",{
+        title: "Business",
+        Business: Business,
+        displayName: req.user ? req.user.displayName : "",
       });
       
     }
@@ -34,10 +48,10 @@ router.get("/", function(req,res,next){
 });
 
 /* GET Route for displaying the Add page - CREATE Operation */
-router.get("/add", function(req,res,next){
+router.get("/add", requireAuth, function(req,res,next){
   res.render("business/add", {
     title: "Add Business List",
-    //displayName: req.user ? req.user.displayName : "",
+    displayName: req.user ? req.user.displayName : "",
   });
 });
 
@@ -60,7 +74,7 @@ router.post("/add", function(req,res,next){
 });
 
 /* GET Route for displaying the Edit page - UPDATE Operation */
-router.get("/edit/:id", function(req,res,next){
+router.get("/edit/:id",requireAuth, function(req,res,next){
   let id = req.params.id; //id of actual object
 
   business.findById(id, (err, businesstoedit) => {
@@ -70,9 +84,9 @@ router.get("/edit/:id", function(req,res,next){
     } else {
       //show the edit view
       res.render("business/edit", {
-        title: "Edit Business List",
+        title: "Business",
         business: businesstoedit,
-        //displayName: req.user ? req.user.displayName : "",
+        displayName: req.user ? req.user.displayName : "",
       });
     }
   });
@@ -82,17 +96,18 @@ router.get("/edit/:id", function(req,res,next){
 router.post("/edit/:id", requireAuth, function(req,res,next){
   let id = req.params.id; //id of actual object
   let updatedBusiness = business({
+    "_id":id,
     "name":req.body.name,
     "number":req.body.number,
     "email": req.body.email
   });
-  business.updateOne({_id:id}, (err, businesstoedit) => {
+  business.updateOne({_id:id}, updatedBusiness,(err) => {
     if (err) {
       console.log(err);
       res.end(err);
     } else {
       //show the edit view
-      res.render("business/edit");
+      res.redirect("/business");
     }
   });
 });
@@ -100,13 +115,13 @@ router.post("/edit/:id", requireAuth, function(req,res,next){
 /* GET to perform  Deletion - DELETE Operation */
 router.get("/delete/:id", requireAuth, function(req,res,next){
   let id = req.params.id;
-  Business.remove({ _id: id }, (err) => {
+  business.remove({ _id: id }, (err) => {
     if (err) {
       console.log(err);
       res.end(err);
     } else {
       //refresh book list
-      res.redirect("/business-list");
+      res.redirect("/business");
     }
   });
 });

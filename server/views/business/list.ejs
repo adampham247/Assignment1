@@ -20,24 +20,23 @@
           <tr>
             <th class="text-center">Contact Name</th>
             <th class="text-center">Contact Number</th>
-            <th class="text-center ">Contact Email</th>
+            <th class="text-center">Contact Email</th>
+            <th class="text-center">Modify</th>
             
           </tr>
         </thead>
         <tbody>
           <!-- Templet row-->
-          <% for (let count=0; count<business.length; count++) { %>
+          <% for (let count = 0; count < Business.length; count++) { %>
             <tr> 
-              <td class="text-centre "><%=business[count].name %></td>
-              <td class="text-centre "><%=business[count].number %></td>
-              <td class="text-centre "><%=business[count].email %></td>
-              <td class="text-center col-1">
-                <a href="business/edit/<%= business[count]._id %>" class="btn btn-primary btn-sm">
-                <i class="fas fa-pencil-alt"></i> Edit</a>
-            </td>
-            <td class="text-center col-1">
-                <a href="/business/delete/<%= business[count]._id %>" class="btn btn-primary btn-sm">
-                <i class="fas fa-trash-alt"></i> Delete</a>
+              <td class="text-centre "><%=Business[count].name %></td>
+              <td class="text-centre "><%=Business[count].number %></td>
+              <td class="text-centre "><%=Business[count].email %></td>
+              <td class="text-center">
+                <a href="/business/edit/<%= Business[count]._id %>" class="btn btn-primary btm-sm"><i class="fas"></i>
+                 Edit</a>
+                <a href="/business/delete/<%= Business[count]._id %>" class="btn btn-danger btm-sm"><i class="fas"></i>
+                 Delete</a>
             </td>         
             </tr>
             <% } %>
